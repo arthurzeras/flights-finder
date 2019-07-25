@@ -1,4 +1,6 @@
+require('dotenv').config()
 const Express = require('express')
+const SGMail = require('@sendgrid/mail')
 const Request = require('request-promise')
 
 const App = Express()
@@ -51,9 +53,12 @@ App.get('/', async (req, res) => {
       if (aPricing < bPricing) return -1
       return 0
     })
+
+    sendMail(pricing.filter(item => item.pricing.saleTotal < 550))
   
     res.status(200).send({ pricing })
   } catch (error) {
+    console.log(error)
     res.status(500).send({ error })
   }
 })
@@ -77,6 +82,25 @@ function reduceToPrice (flights) {
       pricing: item.pricing.airline
     }))
     .filter(item => !!item.pricing)
+}
+
+function sendMail(flights) {
+  SGMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+  flights = flights
+    .map(item => (
+      `EMPRESA: ${item.airline} - Preço: ${item.pricing.saleTotal}`
+    ))
+    .join('\n\n')
+  
+  const msg = {
+    subject: 'Nova passagem interessante...',
+    to: process.env.SENDGRID_EMAILS.split(','),
+    from: process.env.SENDGRID_EMAILS.split(',')[0],
+    text: `Dá uma olhada nessas passagem ai: \n\n ${flights}`
+  };
+
+  SGMail.send(msg)
 }
 
 App.listen(4000, () => {
