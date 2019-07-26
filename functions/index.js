@@ -1,7 +1,7 @@
 const Run = require('./base')
 const Functions = require('firebase-functions')
 
-exports.flightsFinderRobot = Functions.pubsub.schedule('every 2 hours')
+exports.flightsFinderRobot = Functions.pubsub.schedule('every 1 hours')
   .onRun(async () => {
     try {
       await Run({ ...Functions.config() })
