@@ -1,8 +1,10 @@
 require('dotenv').config()
+const Cors = require('cors')
 const Express = require('express')
 const Run = require('./functions/base')
 
 const App = Express()
+App.use(Cors())
 
 App.get('/', async (req, res) => {
   try {
