@@ -1,7 +1,7 @@
 const SGMail = require('@sendgrid/mail')
 const Request = require('request-promise')
 
-const PRICE_LIMIT = 400
+const PRICE_LIMIT = 500
 const BASE_URL = 'https://bff-site.maxmilhas.com.br'
 const HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'
